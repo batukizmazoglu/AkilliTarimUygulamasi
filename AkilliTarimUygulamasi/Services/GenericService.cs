@@ -1,4 +1,4 @@
-using AkilliTarimUygulamasi.Models;
+
 using AkilliTarimUygulaması.Models;
 using Microsoft.EntityFrameworkCore;
 
