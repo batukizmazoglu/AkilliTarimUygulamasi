@@ -1,0 +1,81 @@
+﻿<!-- Views/Home/Index.cshtml -->
+@{
+ViewData["Title"] = "Ana Sayfa";
+}
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-users text-primary me-2"></i>
+                    Kullanıcı İstatistikleri
+                </h5>
+                <p class="card-text">Toplam Kullanıcı: 150</p>
+                <p class="card-text">Aktif Kullanıcı: 45</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line text-success me-2"></i>
+                    Sistem Durumu
+                </h5>
+                <p class="card-text">CPU Kullanımı: 25%</p>
+                <p class="card-text">Bellek Kullanımı: 60%</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-bell text-warning me-2"></i>
+                    Bildirimler
+                </h5>
+                <p class="card-text">3 yeni bildirim</p>
+                <a href="#" class="btn btn-sm btn-primary">Tümünü Gör</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Son Aktiviteler</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Kullanıcı</th>
+                            <th>İşlem</th>
+                            <th>Durum</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>14.12.2024</td>
+                            <td>Ahmet Yılmaz</td>
+                            <td>Giriş Yapıldı</td>
+                            <td><span class="badge bg-success">Başarılı</span></td>
+                        </tr>
+                        <tr>
+                            <td>14.12.2024</td>
+                            <td>Mehmet Demir</td>
+                            <td>Profil Güncellendi</td>
+                            <td><span class="badge bg-primary">Tamamlandı</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

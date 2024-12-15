@@ -1,0 +1,340 @@
+@model IEnumerable<AkilliTarimUygulamasi.Models.User>
+
+@{
+ViewData["Title"] = "Kullanıcılar";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <!-- Kullanıcı Arama -->
+            <input type="text" id="searchInput" class="form-control d-inline-block w-50" placeholder="Ara..." />
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                Add User
+            </button>
+        </div>
+    </div>
+
+    <!-- Kullanıcılar Tablosu -->
+    <table class="table table-hover mt-4">
+        <thead>
+        <tr>
+            <th>
+                <a href="javascript:void(0);" id="sortId" data-sort="id" data-order="asc">ID</a>
+            </th>
+            <th>
+                <a href="javascript:void(0);" id="sortName" data-sort="name" data-order="asc">Name</a>
+            </th>
+            <th>
+                <a href="javascript:void(0);" id="sortEmail" data-sort="email" data-order="asc">Email</a>
+            </th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="userTableBody">
+        <!-- Veriler buraya dinamik olarak gelecek -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap Modal for Adding Users -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm">
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="userName" placeholder="Enter name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="userEmail" placeholder="Enter email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="userPassword" placeholder="Enter password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userRole" class="form-label">Role</label>
+                        <input type="text" class="form-control" id="userRole" placeholder="Enter role" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveUserButton">Save User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal for Updating Users -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateUserForm">
+                    <input type="hidden" id="updateUserId" />
+                    <div class="mb-3">
+                        <label for="updateUserName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="updateUserName" placeholder="Enter name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateUserEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateUserEmail" placeholder="Enter email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateUserRole" class="form-label">Role</label>
+                        <input type="text" class="form-control" id="updateUserRole" placeholder="Enter role" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveUpdatedUserButton">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+    // Kullanıcıları yükleme fonksiyonu
+    function loadUsers(sortColumn = "id", sortOrder = "asc", searchQuery = "") {
+        console.log("Loading users..."); // Bu mesaj konsola yazılıyor mu?
+
+        fetch(`/Users/GetAll?search=${searchQuery}&sortColumn=${sortColumn}&sortOrder=${sortOrder}`)
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Failed to load users. Status:", response.status);
+                    return response.text().then(text => console.error(text)); // Hata detaylarını yazdır
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Loaded users:", data); // API'den dönen kullanıcı verilerini kontrol edin
+                const tableBody = document.getElementById("userTableBody");
+                tableBody.innerHTML = "";
+
+                data.forEach(user => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm update-user" data-id="${user.id}" data-name="${user.name}" data-email="${user.email}" data-role="${user.role}">Update</button>
+                        <button class="btn btn-danger btn-sm delete-user" data-id="${user.id}">Delete</button>
+                    </td>
+                `;
+                    tableBody.appendChild(row);
+                });
+
+                // Update butonlarını yeniden bağla
+                document.querySelectorAll(".update-user").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const userId = this.getAttribute("data-id");
+                        const userName = this.getAttribute("data-name");
+                        const userEmail = this.getAttribute("data-email");
+                        const userRole = this.getAttribute("data-role");
+
+                        document.getElementById("updateUserId").value = userId;
+                        document.getElementById("updateUserName").value = userName;
+                        document.getElementById("updateUserEmail").value = userEmail;
+                        document.getElementById("updateUserRole").value = userRole;
+
+                        const modal = new bootstrap.Modal(document.getElementById("updateUserModal"));
+                        modal.show();
+                    });
+                });
+
+                // Delete butonlarını yeniden bağla
+                document.querySelectorAll(".delete-user").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const userId = this.getAttribute("data-id");
+                        deleteUser(userId);
+                    });
+                });
+            })
+            .catch(error => console.error("Error loading users:", error));
+    }
+
+    document.getElementById("saveUserButton").addEventListener("click", function () {
+        // Formdan bilgileri al
+        const userName = document.getElementById("userName").value;
+        const userEmail = document.getElementById("userEmail").value;
+        const userPassword = document.getElementById("userPassword").value;
+        const userRole = document.getElementById("userRole").value;
+
+        // Yeni kullanıcı nesnesi oluştur
+        const newUser = { name: userName, email: userEmail, password: userPassword, role: userRole };
+
+        console.log("Creating user...", newUser); // Konsola log yaz
+
+        // API'ye POST isteği gönder
+        fetch(`/Users/Create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newUser), // JSON formatında veri gönder
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Failed to create user. Status:", response.status);
+                    return response.text().then(text => console.error(text)); // Hata detaylarını logla
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("User successfully created:", data); // Başarılı oluşturma mesajını logla
+                loadUsers(); // Yeni kullanıcıları tabloya yükle
+                const modal = bootstrap.Modal.getInstance(document.getElementById("addUserModal"));
+                modal.hide(); // Modalı kapat
+                document.getElementById("addUserForm").reset(); // Formu sıfırla
+            })
+            .catch(error => {
+                console.error("Error creating user:", error); // Hata mesajını logla
+            });
+    });
+
+
+    // Kullanıcı Silme Fonksiyonu
+    function deleteUser(userId) {
+        if (confirm("Are you sure you want to delete this user?")) {
+            fetch(`/Users/Delete/${userId}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        loadUsers();
+                    } else {
+                        console.error("Failed to delete user");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    // Kullanıcı Arama
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const searchQuery = this.value;
+        loadUsers("id", "asc", searchQuery);
+    });
+
+    // Kullanıcı Sıralama
+    document.querySelectorAll("th a").forEach(function (header) {
+        header.addEventListener("click", function () {
+            const sortColumn = this.getAttribute("data-sort");
+            const sortOrder = this.getAttribute("data-order") === "asc" ? "desc" : "asc";
+            this.setAttribute("data-order", sortOrder);
+            loadUsers(sortColumn, sortOrder);
+        });
+    });
+
+    // Update Modal'a Bilgi Getirme
+    document.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("update-user")) {
+            const userId = e.target.getAttribute("data-id");
+            const userName = e.target.getAttribute("data-name");
+            const userEmail = e.target.getAttribute("data-email");
+            const userRole = e.target.getAttribute("data-role");
+
+            // Modal alanlarını doldur
+            document.getElementById("updateUserId").value = userId;
+            document.getElementById("updateUserName").value = userName;
+            document.getElementById("updateUserEmail").value = userEmail;
+            document.getElementById("updateUserRole").value = userRole;
+
+            // Modal'ı aç
+            const updateModal = new bootstrap.Modal(document.getElementById("updateUserModal"));
+            updateModal.show();
+        }
+        });
+
+    document.getElementById("saveUpdatedUserButton").addEventListener("click", function () {
+        const userId = document.getElementById("updateUserId").value;
+        const userName = document.getElementById("updateUserName").value;
+        const userEmail = document.getElementById("updateUserEmail").value;
+        const userRole = document.getElementById("updateUserRole").value;
+
+        const updatedUser = { id: userId, name: userName, email: userEmail, role: userRole };
+
+        console.log("Updating user...", updatedUser);
+
+        fetch(`/Users/Update`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedUser),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Failed to update user. Status:", response.status);
+                    return response.text().then(text => console.error(text));
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("User successfully updated:", data);
+                loadUsers(); // Tabloyu güncelle
+
+                // Modal'ı kapat
+                const modal = bootstrap.Modal.getInstance(document.getElementById("updateUserModal"));
+                if (modal) {
+                    modal.hide();
+                }
+
+                // Formu sıfırla
+                document.getElementById("updateUserForm").reset();
+
+                // Backdrop elementini temizle
+                const backdrop = document.querySelector(".modal-backdrop");
+                if (backdrop) {
+                    backdrop.remove(); // Backdrop elementini DOM'dan kaldır
+                }
+            })
+            .catch(error => {
+                console.error("Error updating user:", error);
+
+                // Eğer hata varsa manuel olarak modal ve backdrop'u kapat
+                const modal = bootstrap.Modal.getInstance(document.getElementById("updateUserModal"));
+                if (modal) {
+                    modal.hide();
+                }
+
+                const backdrop = document.querySelector(".modal-backdrop");
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            });
+    });
+
+
+
+
+
+
+
+
+
+    // Sayfa yüklendiğinde kullanıcıları yükle
+    window.onload = loadUsers;
+</script>
+}

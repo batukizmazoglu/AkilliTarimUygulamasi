@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>AkilliTarimUygulamasi</RootNamespace>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+
+
+        
+        <PackageReference Include="bootstrap" Version="5.3.3" />
+      <PackageReference Include="Google.Protobuf" Version="3.29.1" />
+      <PackageReference Include="Google.Protobuf.Tools" Version="3.29.1" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.67.0" />
+      <PackageReference Include="Grpc.AspNetCore.Server" Version="2.67.0" />
+      <PackageReference Include="Grpc.Core.Api" Version="2.67.0" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.69.0-pre1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.29" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.29">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Npgsql" Version="6.0.11" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.29" />
+      <PackageReference Include="SoapCore" Version="1.1.0.51" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+      <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+      <PackageReference Include="System.ServiceModel.Http" Version="4.8.1" />
+      <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.1" />
+      <PackageReference Include="System.ServiceModel.Security" Version="4.8.1" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="GrpcServices\" />
+      <Folder Include="Protos\" />
+    </ItemGroup>
+
+</Project>
