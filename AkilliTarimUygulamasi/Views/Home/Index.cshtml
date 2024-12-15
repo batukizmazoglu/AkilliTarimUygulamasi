@@ -1,57 +1,70 @@
-﻿<!-- Views/Home/Index.cshtml -->
-@{
+﻿@{
 ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <i class="fas fa-users text-primary me-2"></i>
-                    Kullanıcı İstatistikleri
-                </h5>
-                <p class="card-text">Toplam Kullanıcı: 150</p>
-                <p class="card-text">Aktif Kullanıcı: 45</p>
+<div class="container mt-5">
+    <!-- Hava Durumu Kartı -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card text-center shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h2>Hava Durumu</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" id="weatherText">Yükleniyor...</h5>
+                    <p class="display-4 fw-bold">
+                        <span id="temperature">N/A</span>°C
+                    </p>
+                    <p class="text-muted" id="observationTime">Güncelleniyor...</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <i class="fas fa-chart-line text-success me-2"></i>
-                    Sistem Durumu
-                </h5>
-                <p class="card-text">CPU Kullanımı: 25%</p>
-                <p class="card-text">Bellek Kullanımı: 60%</p>
+    <!-- İstatistik Kartları -->
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-2">Kullanıcı İstatistikleri</h5>
+                    <p class="card-text">Toplam Kullanıcı: <strong>150</strong></p>
+                    <p class="card-text">Aktif Kullanıcı: <strong>45</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="bi bi-speedometer2 text-success" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-2">Sistem Durumu</h5>
+                    <p class="card-text">CPU Kullanımı: <strong>25%</strong></p>
+                    <p class="card-text">Bellek Kullanımı: <strong>60%</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="bi bi-bell-fill text-warning" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-2">Bildirimler</h5>
+                    <p class="card-text"><strong>3 yeni bildirim</strong></p>
+                    <a href="#" class="btn btn-primary btn-sm">Tümünü Gör</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <i class="fas fa-bell text-warning me-2"></i>
-                    Bildirimler
-                </h5>
-                <p class="card-text">3 yeni bildirim</p>
-                <a href="#" class="btn btn-sm btn-primary">Tümünü Gör</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Son Aktiviteler</h5>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
+    <!-- Son Aktiviteler Tablosu -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Son Aktiviteler</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
                         <tr>
                             <th>Tarih</th>
                             <th>Kullanıcı</th>
@@ -79,3 +92,55 @@ ViewData["Title"] = "Ana Sayfa";
         </div>
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+    async function loadWeather() {
+        const locationKey = "1303536"; // İstanbul'un Location Key'i
+        try {
+            const response = await fetch(`/api/weather/${locationKey}`);
+            if (!response.ok) {
+                throw new Error("Hava durumu bilgisi alınamadı.");
+            }
+
+            const weatherData = await response.json();
+            console.log("Weather data:", weatherData);
+
+            document.getElementById("weatherText").innerText = weatherData.weatherText || "Bilinmiyor";
+            document.getElementById("temperature").innerText =
+                weatherData.temperature?.metric?.value?.toFixed(1) || "N/A";
+            document.getElementById("observationTime").innerText =
+                `Son Güncelleme: ${weatherData.localObservationDateTime || "Zaman bilgisi yok"}`;
+        } catch (error) {
+            console.error("Error fetching weather data:", error);
+            document.getElementById("weatherText").innerText = "Hava durumu bilgisi alınamadı.";
+            document.getElementById("temperature").innerText = "N/A";
+            document.getElementById("observationTime").innerText = "Zaman bilgisi yok";
+        }
+    }
+
+    window.onload = loadWeather;
+</script>
+
+<!-- CSS -->
+<style>
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .card-header {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    .card-body {
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+    .display-4 {
+        font-size: 3rem;
+        color: #007bff;
+    }
+    .text-muted {
+        font-size: 0.85rem;
+    }
+</style>
