@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
+using AkilliTarimUygulamasi.Controllers;
 using AkilliTarimUygulamasi.Models;
 using AkilliTarimUygulamasi.Services;
-using AkilliTarimUygulaması.Models;
+using Microsoft.EntityFrameworkCore;
+using SoapCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,59 +11,31 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMvc();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
 
-// Database context
+// Veritabanı servisi ve generic servisler
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IFarmDataService, FarmDataService>(); // Scoped olarak ekleyin
+builder.Services.AddScoped<FarmController>(); // Eğer Controller'ı manuel eklemeniz gerekiyorsa
 
-// Generic services
-builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
-
-// API anahtarını appsettings.json'dan al
-string apiKey = builder.Configuration["AccuWeather:ApiKey"];
-
-// WeatherService'i DI konteynerine ekle
-builder.Services.AddHttpClient<WeatherService>(client =>
-{
-    client.BaseAddress = new Uri("http://dataservice.accuweather.com/");
-});
-
-// WeatherService'i API anahtarıyla yapılandırmak için bağımlılıkları çöz
-builder.Services.AddSingleton(provider =>
-{
-    var httpClient = provider.GetRequiredService<HttpClient>();
-    return new WeatherService(httpClient, apiKey);
-});
+builder.Services.AddSoapCore(); // SOAP servisi için SoapCore
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.UseRouting();  // Yönlendirme işlemi
+
+app.UseEndpoints(endpoints =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    endpoints.UseSoapEndpoint<FarmReportService>("/FarmReportService.asmx", new SoapEncoderOptions(), SoapSerializer.XmlSerializer);
+});
 
-app.UseCors("AllowAll");
-
+// Diğer yapılandırmalar
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,7 +1,7 @@
 using AkilliTarimUygulamasi.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AkilliTarimUygulaması.Models
+namespace AkilliTarimUygulamasi.Models
 {
     public class ApplicationDbContext : DbContext
     {
@@ -9,11 +9,14 @@ namespace AkilliTarimUygulaması.Models
         public DbSet<Field> Fields { get; set; }
         public DbSet<Crop> Crops { get; set; }
         public DbSet<Sale> Sales { get; set; }
+        // public DbSet<FarmData> FarmData { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         { }
 
+        public DbSet<FarmData> FarmData { get; set; }
+        
         /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

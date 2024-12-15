@@ -8,11 +8,11 @@
     }
   },
   "profiles": {
-    "AkilliTarimUygulaması": {
+    "AkilliTarimUygulamasi": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7136;http://localhost:5270",
+      "applicationUrl": "https://localhost:44308;http://localhost:5270",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
