@@ -8,15 +8,16 @@ public class WeatherService
     private readonly HttpClient _httpClient;
     private readonly string _apiKey;
 
-    public WeatherService(HttpClient httpClient, string apiKey)
+    public WeatherService(IHttpClientFactory httpClientFactory, string apiKey)
     {
-        _httpClient = httpClient;
+        // Use IHttpClientFactory to create the HttpClient instance
+        _httpClient = httpClientFactory.CreateClient();
         _apiKey = apiKey;
     }
 
     public async Task<WeatherResponse> GetFormattedWeatherAsync(string locationKey)
     {
-        var requestUrl = $"http://dataservice.accuweather.com/currentconditions/v1/{locationKey}?apikey={_apiKey}&language=tr&details=true";
+        var requestUrl = $"http://dataservice.accuweather.com/currentconditions/v1/{locationKey}?apikey={_apiKey}&language=tr-tr&details=true";
         var response = await _httpClient.GetAsync(requestUrl);
 
         if (!response.IsSuccessStatusCode)
@@ -40,6 +41,4 @@ public class WeatherService
 
         return weatherData;
     }
-
-
 }

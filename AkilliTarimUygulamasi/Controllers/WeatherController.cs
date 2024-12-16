@@ -1,5 +1,7 @@
+using AkilliTarimUygulamasi.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+
+namespace AkilliTarimUygulamasi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
