@@ -1,14 +1,26 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AkilliTarimUygulamasi.Models
 {
     public class FarmData
     {
-        public int Id { get; set; }
-        public decimal SoilMoisture { get; set; } // Toprak nemi
-        public string Weather { get; set; } // Hava durumu
-        public decimal CropYield { get; set; } // Ürün verimliliği
-        public string IrrigationStatus { get; set; } // Sulama durumu
-        public DateTime Date { get; set; } // Kayıt tarihi
+        public int Id { get; set; } // Birincil Anahtar
+
+        [Required]
+        public string Name { get; set; } = string.Empty; // Tarla Adı
+
+        [Required]
+        public double Area { get; set; } // Alan (m²)
+
+        [Required]
+        public string Crop { get; set; } = string.Empty; // Ürün Adı
+
+        public DateTime Date { get; set; } = DateTime.Now; // Tarih Bilgisi
+        public double SoilMoisture { get; set; } // Toprak Nem Oranı
+        public string Weather { get; set; } = string.Empty; // Hava Durumu
+        public double CropYield { get; set; } // Ürün Verimi
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now; // Oluşturulma Tarihi
     }
 }

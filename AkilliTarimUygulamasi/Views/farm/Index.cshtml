@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "Tarla Yönetim Ekranı";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Tarım Verileri</h2>
+
+    <!-- Dinamik Veri Tablosu -->
+    <div class="table-responsive">
+        <table class="table table-hover" id="farmTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Tarla Adı</th>
+                <th>Alan (m²)</th>
+                <th>Ürün</th>
+                <th>Oluşturulma Tarihi</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Veriler Dinamik Olarak Buraya Yüklenecek -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- AJAX Script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        loadFarmData();
+
+        function loadFarmData() {
+            $.ajax({
+                url: '/api/Farm', // API'nin yolu
+                type: 'GET',
+                success: function (data) {
+                    var tableBody = $('#farmTable tbody');
+                    tableBody.empty(); // Önce tabloyu temizle
+
+                    // Gelen veriyi tabloya ekle
+                    $.each(data, function (index, farm) {
+                        tableBody.append(`
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${farm.name}</td>
+                                <td>${farm.area}</td>
+                                <td>${farm.crop}</td>
+                                <td>${new Date(farm.createdAt).toLocaleDateString()}</td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function () {
+                    alert('Tarım verileri yüklenirken bir hata oluştu!');
+                }
+            });
+        }
+    });
+</script>

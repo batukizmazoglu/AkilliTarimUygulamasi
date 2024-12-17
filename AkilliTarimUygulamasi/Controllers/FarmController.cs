@@ -2,42 +2,48 @@ using Microsoft.AspNetCore.Mvc;
 using AkilliTarimUygulamasi.Services; // Servis katmanına erişim
 using AkilliTarimUygulamasi.Models;  // Model erişimi
 
-namespace AkilliTarimUygulamasi.Controllers
+namespace AkilliTarimUygulamasi.Controllers;
+[Route("Farm")]
+public class FarmController : Controller
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FarmController : ControllerBase
+    private readonly IFarmDataService _farmDataService;
+
+    public FarmController(IFarmDataService farmDataService)
     {
-        private readonly IFarmDataService _farmDataService;
+        _farmDataService = farmDataService;
+    }
 
-        // FarmDataService bağımlılığı enjekte ediliyor
-        public FarmController(IFarmDataService farmDataService)
+    // Tarım verilerini listeleme - View için
+    [HttpGet("List")]
+    public IActionResult Index()
+    {
+        var farmData = _farmDataService.GetAllFarmData();
+        if (farmData == null || !farmData.Any())
         {
-            _farmDataService = farmDataService;
+            ViewBag.Message = "Hiç tarla verisi bulunamadı.";
+            return View(new List<FarmData>());
+        }
+        return View(farmData);
+    }
+
+    // Yeni tarım verisi ekleme sayfası
+    [HttpGet("Add")]
+    public IActionResult Add()
+    {
+        return View();
+    }
+
+    // Yeni tarım verisi ekleme işlemi
+    [HttpPost("Add")]
+    public IActionResult Add([FromForm] FarmData farmData)
+    {
+        if (!ModelState.IsValid || farmData == null)
+        {
+            ViewBag.Message = "Geçersiz veri girişi.";
+            return View();
         }
 
-        // Tarım verilerini almak
-        [HttpGet]
-        public IActionResult GetFarmData()
-        {
-            var farmData = _farmDataService.GetAllFarmData();
-            if (farmData == null || !farmData.Any())
-            {
-                return NotFound("No farm data available.");
-            }
-            return Ok(farmData);
-        }
-
-        // Tarım verisi eklemek
-        [HttpPost]
-        public IActionResult AddFarmData([FromBody] FarmData farmData)
-        {
-            if (farmData == null)
-            {
-                return BadRequest("Farm data is invalid.");
-            }
-            _farmDataService.AddFarmData(farmData);
-            return CreatedAtAction(nameof(GetFarmData), new { id = farmData.Id }, farmData);
-        }
+        _farmDataService.AddFarmData(farmData);
+        return RedirectToAction("Index");
     }
 }
