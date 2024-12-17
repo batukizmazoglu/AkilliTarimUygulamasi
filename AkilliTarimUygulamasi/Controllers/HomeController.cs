@@ -18,6 +18,15 @@ namespace AkilliTarimUygulamasi.Controllers
         {
             _logger.LogInformation("User accessed the Home page.");
             ViewData["Message"] = "Welcome to the Home page!";
+            
+            // Session'dan kullanıcının ID ve rolünü alıyoruz
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            // Bu verileri View'a gönderiyoruz
+            ViewBag.UserId = userId;
+            ViewBag.UserRole = userRole;
+            
             return View();
         }
 

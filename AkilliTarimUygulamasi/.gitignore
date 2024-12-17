@@ -1,0 +1,42 @@
+# .NET Core ve ASP.NET Core için yaygın .gitignore kuralları
+
+# Proje dosyaları
+.vscode/              # Visual Studio Code ayarları
+.idea/                # JetBrains IDE (Rider vs.) ayarları
+*.user                # Kullanıcıya özgü proje ayarları
+*.suo                 # Visual Studio kullanıcı ayarları
+*.userosscache        # Visual Studio kullanıcı verisi
+*.sln.docstates       # Visual Studio çözüm dosyası durumu
+
+# Derleme ve bağımlılık dosyaları
+bin/                  # Derleme çıktıları
+obj/                  # Geçici derleme dosyaları
+artifacts/            # Yayımlama sonuçları
+
+# NuGet Paketleri
+*.nupkg               # NuGet paket dosyaları
+.nuget/               # NuGet önbellek dizini
+
+# Kullanıcı gizli anahtarları (Secrets)
+secrets.json          # Eğer proje için secrets.json kullanıyorsanız
+
+# Uygulama konfigürasyonu
+appsettings.json      # Yerel bağlantı dizesi ve hassas veriler içeriyorsa
+
+# ASP.NET Core ile ilgili
+project.lock.json     # ASP.NET Core (eski versiyonlar için)
+project.fragment.json # ASP.NET Core (eski versiyonlar için)
+
+# Farklı IDE/Editor dosyaları
+*.vs/                 # Visual Studio dosyaları
+.vsconfig             # Visual Studio konfigürasyon dosyaları
+
+# Log dosyaları
+*.log                 # Genel log dosyaları
+
+# Windows'tan gelen geçici dosyalar
+Thumbs.db             # Windows Thumbnails veritabanı
+Desktop.ini           # Windows desktop yapılandırma dosyası
+
+# macOS'tan gelen geçici dosyalar
+.DS_Store             # macOS geçici dosya

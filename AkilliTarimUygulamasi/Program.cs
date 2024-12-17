@@ -10,6 +10,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Session middleware'i ekleyelim
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Oturum süresi
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Register IHttpClientFactory for DI
 builder.Services.AddHttpClient();  // Registers HttpClientFactory to use HttpClient in services
 
@@ -48,6 +57,9 @@ app.MapControllers();  // This will handle routes like /api/Farm
 app.UseStaticFiles();  // Ensure static files can be served
 
 app.UseAuthorization();  // Yetkilendirme işlemi
+
+// Session middleware'ini kullan
+app.UseSession();
 
 // Hata sayfası geliştirme ortamında gösterilecek
 if (app.Environment.IsDevelopment())
