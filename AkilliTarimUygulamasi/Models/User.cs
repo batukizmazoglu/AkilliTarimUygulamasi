@@ -9,6 +9,6 @@ public class User
     public string Role { get; set; }
     
     // Navigation Property
-    // public ICollection<Field> Fields { get; set; }
-    // public ICollection<Sale> Sales { get; set; }
+    public ICollection<Field> Fields { get; set; } = new List<Field>();  // Varsayılan boş liste atandı
+    public ICollection<Sale> Sales { get; set; } = new List<Sale>();    // Varsayılan boş liste atandı
 }

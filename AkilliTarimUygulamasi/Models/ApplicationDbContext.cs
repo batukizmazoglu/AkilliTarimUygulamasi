@@ -17,7 +17,7 @@ namespace AkilliTarimUygulamasi.Models
 
         public DbSet<FarmData> FarmData { get; set; }
         
-        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -38,14 +38,15 @@ namespace AkilliTarimUygulamasi.Models
                 .HasForeignKey(s => s.UserId);
 
             modelBuilder.Entity<Sale>()
-                .HasOne(s => s.Crop)
-                .WithMany(c => c.Sales)
-                .HasForeignKey(s => s.CropId);
+                .HasOne(s => s.Crop) // Crop-Sale ilişkisi
+                .WithMany(c => c.Sales) // Crop tablosundaki navigation property
+                .HasForeignKey(s => s.CropId) // Foreign Key
+                .OnDelete(DeleteBehavior.Cascade); // Silme davranışı: Crop silinirse ilgili Sales kayıtları da silinir.
 
             modelBuilder.Entity<Sale>()
                 .HasOne(s => s.Field)
                 .WithMany(f => f.Sales)
                 .HasForeignKey(s => s.FieldId);
-        }*/
+        }
     }
 }

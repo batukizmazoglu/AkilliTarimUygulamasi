@@ -1,0 +1,20 @@
+@model AkilliTarimUygulamasi.Models.FarmData
+
+@{
+    ViewData["Title"] = "Tarla Verisini Sil";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-danger">Tarla Verisini Sil</h2>
+    <p class="text-center">Bu işlemi geri alamazsınız. Devam etmek istiyor musunuz?</p>
+
+    <div class="text-center">
+        <form method="post" asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash me-2"></i>Evet, Sil
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Hayır, Geri Dön</a>
+        </form>
+    </div>
+</div>

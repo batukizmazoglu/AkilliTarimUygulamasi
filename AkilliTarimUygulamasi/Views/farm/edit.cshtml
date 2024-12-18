@@ -1,31 +1,31 @@
 @model AkilliTarimUygulamasi.Models.FarmData
 
 @{
-    ViewData["Title"] = "Yeni Tarım Verisi Ekle";
+    ViewData["Title"] = "Tarla Verisini Düzenle";
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">Yeni Tarım Verisi Ekle</h2>
+    <h2 class="mb-4 text-center">Tarla Verisini Düzenle</h2>
 
-    <form method="post" asp-action="Add">
+    <form method="post" asp-action="Edit">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="mb-3">
                     <label asp-for="Name" class="form-label">Tarla Adı</label>
-                    <input asp-for="Name" class="form-control" placeholder="Tarlanın adını girin" required />
+                    <input asp-for="Name" class="form-control" required />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Area" class="form-label">Alan (m²)</label>
-                    <input asp-for="Area" type="number" class="form-control" placeholder="Alan (m²)" required />
+                    <input asp-for="Area" type="number" class="form-control" required />
                     <span asp-validation-for="Area" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Crop" class="form-label">Ürün</label>
-                    <input asp-for="Crop" class="form-control" placeholder="Ürün adını girin" required />
+                    <input asp-for="Crop" class="form-control" required />
                     <span asp-validation-for="Crop" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-success w-100">
+                <button type="submit" class="btn btn-primary w-100">
                     <i class="fas fa-save me-2"></i>Kaydet
                 </button>
             </div>

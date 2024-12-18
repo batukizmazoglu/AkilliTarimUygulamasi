@@ -22,5 +22,10 @@ namespace AkilliTarimUygulamasi.Models
         public double CropYield { get; set; } // Ürün Verimi
 
         public DateTime CreatedAt { get; set; } = DateTime.Now; // Oluşturulma Tarihi
+
+        // Foreign Key ve Navigation Property
+        [Required]
+        public int FieldId { get; set; } // Tarlayı tanımlayan yabancı anahtar
+        public Field Field { get; set; } // İlgili tarla için ilişki
     }
 }
