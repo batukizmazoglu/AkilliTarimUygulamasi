@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace AkilliTarimUygulaması.Migrations
+namespace AkilliTarimUygulamasi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241213180244_InitialCreate")]
+    [Migration("20241219163302_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace AkilliTarimUygulaması.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Crop", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Crop", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,52 @@ namespace AkilliTarimUygulaması.Migrations
                     b.ToTable("Crops");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Field", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.FarmData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Area")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Crop")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("CropYield")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FieldId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("SoilMoisture")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Weather")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FieldId");
+
+                    b.ToTable("FarmData");
+                });
+
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Field", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,7 +129,7 @@ namespace AkilliTarimUygulaması.Migrations
                     b.ToTable("Fields");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Sale", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,7 +166,7 @@ namespace AkilliTarimUygulaması.Migrations
                     b.ToTable("Sales");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.User", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,9 +195,9 @@ namespace AkilliTarimUygulaması.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Crop", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Crop", b =>
                 {
-                    b.HasOne("AkilliTarimUygulaması.Models.Field", "Field")
+                    b.HasOne("AkilliTarimUygulamasi.Models.Field", "Field")
                         .WithMany("Crops")
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -161,9 +206,20 @@ namespace AkilliTarimUygulaması.Migrations
                     b.Navigation("Field");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Field", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.FarmData", b =>
                 {
-                    b.HasOne("AkilliTarimUygulaması.Models.User", "User")
+                    b.HasOne("AkilliTarimUygulamasi.Models.Field", "Field")
+                        .WithMany()
+                        .HasForeignKey("FieldId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Field");
+                });
+
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Field", b =>
+                {
+                    b.HasOne("AkilliTarimUygulamasi.Models.User", "User")
                         .WithMany("Fields")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -172,21 +228,21 @@ namespace AkilliTarimUygulaması.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Sale", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Sale", b =>
                 {
-                    b.HasOne("AkilliTarimUygulaması.Models.Crop", "Crop")
+                    b.HasOne("AkilliTarimUygulamasi.Models.Crop", "Crop")
                         .WithMany("Sales")
                         .HasForeignKey("CropId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AkilliTarimUygulaması.Models.Field", "Field")
+                    b.HasOne("AkilliTarimUygulamasi.Models.Field", "Field")
                         .WithMany("Sales")
                         .HasForeignKey("FieldId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AkilliTarimUygulaması.Models.User", "User")
+                    b.HasOne("AkilliTarimUygulamasi.Models.User", "User")
                         .WithMany("Sales")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -199,19 +255,19 @@ namespace AkilliTarimUygulaması.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Crop", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Crop", b =>
                 {
                     b.Navigation("Sales");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.Field", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.Field", b =>
                 {
                     b.Navigation("Crops");
 
                     b.Navigation("Sales");
                 });
 
-            modelBuilder.Entity("AkilliTarimUygulaması.Models.User", b =>
+            modelBuilder.Entity("AkilliTarimUygulamasi.Models.User", b =>
                 {
                     b.Navigation("Fields");
 

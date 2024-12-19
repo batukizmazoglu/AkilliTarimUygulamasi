@@ -29,6 +29,7 @@ namespace AkilliTarimUygulamasi.Services
         // Yeni tarla verisi ekleme
         public void AddFarmData(FarmData farmData)
         {
+            farmData.CreatedAt = DateTime.Now; // Varsayılan oluşturulma tarihi atanıyor
             _dbContext.FarmData.Add(farmData);
             _dbContext.SaveChanges();
         }
@@ -62,6 +63,14 @@ namespace AkilliTarimUygulamasi.Services
                 _dbContext.SaveChanges();
             }
         }
+
+        // Filtrelenmiş verileri getirme (örneğin ürün adına göre)
+        public IEnumerable<FarmData> GetFarmDataByCrop(string cropName)
+        {
+            return _dbContext.FarmData.Include(f => f.Field)
+                .Where(f => f.Crop == cropName)
+                .ToList();
+        }
     }
 
     // Servis için arayüz
@@ -72,5 +81,6 @@ namespace AkilliTarimUygulamasi.Services
         void AddFarmData(FarmData farmData);
         void UpdateFarmData(FarmData updatedFarmData);
         void DeleteFarmData(int id);
+        IEnumerable<FarmData> GetFarmDataByCrop(string cropName); // Yeni metot
     }
 }

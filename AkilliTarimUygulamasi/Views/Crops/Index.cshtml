@@ -1,0 +1,39 @@
+@{
+    ViewBag.Title = "Ürünler Listesi";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning">
+        @ViewBag.Message
+    </div>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Ürün Adı</th>
+        <th>Tarla</th>
+        <th>İşlemler</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var crop in Model)
+    {
+        <tr>
+            <td>@crop.Name</td>
+            <td>@crop.Field.Name</td>
+            <td>
+                <a href="@Url.Action("Edit", "Crop", new { id = crop.Id })" class="btn btn-primary">Düzenle</a>
+                <form action="@Url.Action("Delete", "Crop", new { id = crop.Id })" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Add", "Crop")" class="btn btn-success">Yeni Ürün Ekle</a>

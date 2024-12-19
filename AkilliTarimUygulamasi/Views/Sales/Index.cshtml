@@ -1,0 +1,28 @@
+@model IEnumerable<AkilliTarimUygulamasi.Models.Sale>
+
+<h2>Satış Listesi</h2>
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <p>@ViewBag.Message</p>
+}
+<table>
+    <thead>
+    <tr>
+        <th>Ürün</th>
+        <th>Tarla</th>
+        <th>Kullanıcı</th>
+        <th>Satış Tutarı</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var sale in Model)
+    {
+        <tr>
+            <td>@sale.Crop.Name</td>
+            <td>@sale.Field.Name</td>
+            <td>@sale.User.Name</td>
+            <td>@sale.Amount</td>
+        </tr>
+    }
+    </tbody>
+</table>

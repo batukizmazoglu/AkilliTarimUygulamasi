@@ -1,0 +1,43 @@
+@model AkilliTarimUygulamasi.Models.Sale
+
+<div class="container mt-4">
+    <h2>Yeni Satış Ekle</h2>
+    <form asp-action="Add" method="post">
+        <div class="mb-3">
+            <label for="CropId">Ürün</label>
+            <select id="CropId" name="CropId" class="form-select">
+                @foreach (var crop in ViewBag.Crops)
+                {
+                    <option value="@crop.Id">@crop.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="FieldId">Tarla</label>
+            <select id="FieldId" name="FieldId" class="form-select">
+                @foreach (var field in ViewBag.Fields)
+                {
+                    <option value="@field.Id">@field.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="UserId">Kullanıcı</label>
+            <select id="UserId" name="UserId" class="form-select">
+                @foreach (var user in ViewBag.Users)
+                {
+                    <option value="@user.Id">@user.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="QuantitySold">Satılan Miktar</label>
+            <input type="number" id="QuantitySold" name="QuantitySold" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="Amount">Tutar</label>
+            <input type="number" id="Amount" name="Amount" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+    </form>
+</div>
