@@ -1,0 +1,48 @@
+@model AkilliTarimUygulamasi.Models.Crop
+
+<div class="container mt-4">
+    <h2>Ürün Düzenle</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+
+        <div class="mb-3">
+            <label for="Name">Ürün Adı</label>
+            <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="PlantingDate">Ekildiği Tarih</label>
+            <input type="date" id="PlantingDate" name="PlantingDate" class="form-control"
+                   value="@Model.PlantingDate.ToString("yyyy-MM-dd")" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="Quantity">Miktar</label>
+            <input type="number" id="Quantity" name="Quantity" class="form-control" value="@Model.Quantity" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="Status">Durum</label>
+            <input type="text" id="Status" name="Status" class="form-control" value="@Model.Status" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="FieldId">Tarla</label>
+            <select id="FieldId" name="FieldId" class="form-select">
+                @foreach (var field in ViewBag.Fields)
+                {
+                    if (field.Id == Model.FieldId)
+                    {
+                        <option value="@field.Id" selected>@field.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@field.Id">@field.Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Kaydet</button>
+    </form>
+</div>

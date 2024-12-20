@@ -4,9 +4,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace AkilliTarimUygulaması.Migrations
+namespace AkilliTarimUygulamasi.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -72,6 +72,33 @@ namespace AkilliTarimUygulaması.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FarmData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Area = table.Column<double>(type: "double precision", nullable: false),
+                    Crop = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    SoilMoisture = table.Column<double>(type: "double precision", nullable: false),
+                    Weather = table.Column<string>(type: "text", nullable: false),
+                    CropYield = table.Column<double>(type: "double precision", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FieldId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FarmData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FarmData_Fields_FieldId",
+                        column: x => x.FieldId,
+                        principalTable: "Fields",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sales",
                 columns: table => new
                 {
@@ -113,6 +140,11 @@ namespace AkilliTarimUygulaması.Migrations
                 column: "FieldId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FarmData_FieldId",
+                table: "FarmData",
+                column: "FieldId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Fields_UserId",
                 table: "Fields",
                 column: "UserId");
@@ -135,6 +167,9 @@ namespace AkilliTarimUygulaması.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "FarmData");
+
             migrationBuilder.DropTable(
                 name: "Sales");
 

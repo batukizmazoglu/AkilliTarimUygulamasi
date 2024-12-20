@@ -38,56 +38,51 @@
 
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
-                @if (ViewBag.UserId != null)
-                {
-                    var role = ViewBag.UserRole;
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Home/Index">
-                            <i class="fas fa-home me-1"></i>Ana Sayfa
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Crops/Index">
-                            <i class="fas fa-leaf me-1"></i>Crops
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Fields/Index">
-                            <i class="fas fa-cogs me-1"></i>Fields
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Sales/Index">
-                            <i class="fas fa-dollar-sign me-1"></i>Sales
-                        </a>
-                    </li>
+                <!-- Ana Sayfa -->
+                
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-chart-bar me-1"></i>Dashboard
+                    </a>
+                </li>
+                <!-- Ayarlar -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-cog me-1"></i>Ayarlar
+                    </a>
+                </li>
+                <!-- Users -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Users" asp-action="Index">
+                        <i class="fas fa-users me-1"></i>Users
+                    </a>
+                </li>
+                <!-- Tarla Uygulamaları -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Farm" asp-action="Add">
+                        <i class="fas fa-seedling me-1"></i>Tarla Uygulamaları
+                    </a>
+                </li>
+                <!-- Sales Iliskisi -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Sales" asp-action="Index">Satışlar</a>
+                </li>
+                !-- Urunler Menusu -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Crop" asp-action="Index">Ürünler</a>
+                </li>
 
-                    <!-- Admin'in özel butonu -->
-                    @if (role == "Admin")
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Admin/Index">
-                                <i class="fas fa-users me-1"></i>Users
-                            </a>
-                        </li>
-                    }
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Login/Logout">
-                            <i class="fas fa-sign-out-alt me-1"></i>Çıkış Yap
-                        </a>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Login/Index">
-                            <i class="fas fa-sign-in-alt me-1"></i>Giriş Yap
-                        </a>
-                    </li>
-                }
+                <!-- Giriş Ekranı -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/Login/Index">
+                        <i class="fas fa-sign-in-alt me-1"></i>Giriş Yap
+                    </a>
+                </li>
             </ul>
 
+            <!-- Arama Kutusu -->
             <div class="search-box">
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Ara..." aria-label="Search">
